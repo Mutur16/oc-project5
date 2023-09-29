@@ -17,27 +17,61 @@ const slides = [
 	}
 ]
 
-let selectedSlide = null;
-for (slide of slides) {
+let selectedSlide = 0;
+const maxSlide = slides.length - 1
+const minSlide = 0
+
+function slideContent (slide) {
+	document.querySelector(".banner-img").setAttribute("src", "./assets/images/slideshow/" + slide.image)
+	document.querySelector("#banner p").innerHTML = slide.tagLine
+}
+
+for (slideIndex in slides) {
 	let dot = document.createElement("div")
 	dot.classList.add("dot")
 
 	let dots = document.querySelector(".dots")
 	dots.appendChild(dot)
-
-	if (selectedSlide === null) {
-		dot.classList.add("dot_selected")
-		selectedSlide = slide
-	}
 }
+
+let dotSelected = document.querySelectorAll(".dot")
+dotSelected[selectedSlide].classList.add("dot_selected")
 
 let arrowRight = document.querySelector(".arrow_right")
 let arrowLeft = document.querySelector(".arrow_left")
 
 arrowRight.addEventListener("click", () => {
-	console.log("okR")
+	dotSelected[selectedSlide].classList.remove("dot_selected")
+
+	let nextSlide = null;
+	if (selectedSlide === maxSlide) {
+		nextSlide = minSlide 
+	} else {
+		nextSlide = selectedSlide + 1
+	}
+
+	const slide = slides[nextSlide]
+	slideContent(slide)
+	
+	selectedSlide = nextSlide
+
+	dotSelected[selectedSlide].classList.add("dot_selected")
 })
 
 arrowLeft.addEventListener("click", () => {
-	console.log("okL")
+	dotSelected[selectedSlide].classList.remove("dot_selected")
+	
+	let previousSlide = null;
+	if (selectedSlide === minSlide) {
+		previousSlide = maxSlide
+	} else {
+		previousSlide = selectedSlide - 1
+	}
+
+	const slide = slides[previousSlide]
+	slideContent(slide)
+
+	selectedSlide = previousSlide
+
+	dotSelected[selectedSlide].classList.add("dot_selected")
 })
